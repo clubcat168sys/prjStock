@@ -1,4 +1,20 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(python3.12 --version)",
+      "Bash(brew --version)",
+      "Bash(brew install:*)",
+      "Bash(brew list:*)",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//Library/Frameworks/Python.framework/Versions/**)",
+      "Bash(pip3.10 --version)",
+      "Bash(pip3 --version)",
+      "Bash(sudo rm:*)",
+      "Bash(psql --version)",
+      "Bash(brew services:*)",
+      "Bash(/opt/homebrew/opt/postgresql@16/bin/psql --version)"
+    ]
+  },
   "hooks": {
     "Stop": [
       {

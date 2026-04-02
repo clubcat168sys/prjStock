@@ -17,7 +17,7 @@
 ## Running Jobs
 
 ```bash
-# Download raw stock info files
+# Download raw stock info files (TWSE/MOPS CSV)
 python src/twstock/jobs/download_stock_info.py
 
 # ETL: parse CSV and upsert to DB (--data-date required)
@@ -26,9 +26,20 @@ python -m twstock.jobs.etl_stock_info --data-date 20251225
 # ETL with a specific file
 python -m twstock.jobs.etl_stock_info --data-date 20251225 --file /path/to/file.csv --reason "manual"
 
+# ETL FinMind daily datasets (stock_price / inst_inv / trading_daily_rpt / margin)
+# 需先在 DB 設定 lookup_code(FINMIND, TOKEN)
+python -m twstock.jobs.etl_finmind_daily --data-date 20251225
+
 # Via Docker
 docker exec -it twstock_python bash -lc "cd /app/src && python -m twstock.jobs.etl_stock_info --data-date 20251225"
+docker exec -it twstock_python bash -lc "cd /app/src && python -m twstock.jobs.etl_finmind_daily --data-date 20251225"
 ```
+
+## FinMind API Setup
+
+1. 在 [FinMind](https://finmindtrade.com/) 取得 token
+2. 更新 DB：`UPDATE twstock.lookup_code SET code_value = '<your_token>' WHERE category = 'FINMIND' AND code_key = 'TOKEN';`
+3. `REQ_DELAY`（預設 1.0 秒）可依 plan 調整
 
 ## Environment
 
@@ -50,8 +61,20 @@ DDL in `db/sql/tables/`. New tables follow `template/sql/table_template.sql`. Se
 |---|---|
 | `job_logs` | Append-only event log (RUN/STEP/ERR) |
 | `lookup_code` | Config KV store (URLs, paths, parameters) |
-| `stock_info` | Stock master (ID, name, industry, shares, address) |
+| `stock_info` | Stock master (ID, name, industry, shares, is_warning) |
 | `stock_info_chg` | Change log via DB trigger on `stock_info` |
-| `stock_price` | Daily OHLCV data |
-| `broker_inventory_daily` | Daily broker inventory by stock |
+| `stock_price` | Daily OHLCV data（FinMind: TaiwanStockPrice） |
+| `inst_inv_buy_sell` | 三大法人每日買賣超（FinMind: TaiwanStockInstitutionalInvestorsBuySell） |
+| `trading_daily_rpt` | 分點進出明細（FinMind: TaiwanStockTradingDailyReport），月分區 |
+| `margin_pur_short_sale` | 融資融券餘額（FinMind: TaiwanStockMarginPurchaseShortSale） |
+| `broker_inventory_daily` | 分點庫存日序列（衍生表），月分區 |
 | `trading_date` | Trading calendar |
+
+## Key SQL Functions
+
+DDL in `db/sql/funcs/`.
+
+| Function | Purpose |
+|---|---|
+| `fn_calc_inventory_slope(date, window_days)` | 計算分點庫存線性回歸斜率 |
+| `fn_detect_accumulation(date, ...)` | 吸籌偵測主函式（5層濾網） |
