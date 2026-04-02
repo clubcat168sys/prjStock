@@ -1,41 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3.12 --version)",
-      "Bash(brew --version)",
-      "Bash(brew install:*)",
-      "Bash(brew list:*)",
-      "Read(//opt/homebrew/bin/**)",
-      "Read(//Library/Frameworks/Python.framework/Versions/**)",
-      "Bash(pip3.10 --version)",
-      "Bash(pip3 --version)",
-      "Bash(sudo rm:*)",
-      "Bash(psql --version)",
-      "Bash(brew services:*)",
-      "Bash(/opt/homebrew/opt/postgresql@16/bin/psql --version)",
-      "Bash(psql -U postgres -c \"\\\\l\")",
-      "Bash(psql -c \"\\\\l\")",
-      "Bash(pg_isready)",
-      "Bash(psql -l)",
-      "Bash(psql -d postgres)",
-      "Bash(psql -d postgres -c \"SELECT 1 FROM pg_database WHERE datname='ptwstock'\")",
-      "Bash(psql -d postgres -c \"CREATE DATABASE ptwstock OWNER twstock ENCODING 'UTF8';\")",
-      "Bash(psql -d ptwstock)",
-      "Bash(psql -d ptwstock -c \"SELECT current_user, session_user;\")",
-      "Bash(psql \"postgresql://twstock:ghost1234@localhost:5432/ptwstock\" -c \"SET search_path TO twstock; SELECT current_schema\\(\\);\")"
-    ]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; $n = New-Object System.Windows.Forms.NotifyIcon; $n.Icon = [System.Drawing.SystemIcons]::Information; $n.Visible = $true; $n.ShowBalloonTip(5000, 'Claude Code', '已完成', 'Info'); Start-Sleep 6; $n.Dispose()\""
-          }
-        ]
-      }
+      "Bash(mkdir -p /Users/albert/project-repo/prjStock/prjTWStock/db/sql/tables /Users/albert/project-repo/prjStock/prjTWStock/db/sql/funcs /Users/albert/project-repo/prjStock/prjTWStock/db/sql/seeds /Users/albert/project-repo/prjStock/prjTWStock/db/sql/indexes)",
+      "Bash(touch /Users/albert/project-repo/prjStock/prjTWStock/db/sql/tables/.gitkeep /Users/albert/project-repo/prjStock/prjTWStock/db/sql/funcs/.gitkeep /Users/albert/project-repo/prjStock/prjTWStock/db/sql/seeds/.gitkeep /Users/albert/project-repo/prjStock/prjTWStock/db/sql/indexes/.gitkeep)"
     ]
   }
 }
