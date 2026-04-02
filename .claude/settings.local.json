@@ -12,7 +12,17 @@
       "Bash(sudo rm:*)",
       "Bash(psql --version)",
       "Bash(brew services:*)",
-      "Bash(/opt/homebrew/opt/postgresql@16/bin/psql --version)"
+      "Bash(/opt/homebrew/opt/postgresql@16/bin/psql --version)",
+      "Bash(psql -U postgres -c \"\\\\l\")",
+      "Bash(psql -c \"\\\\l\")",
+      "Bash(pg_isready)",
+      "Bash(psql -l)",
+      "Bash(psql -d postgres)",
+      "Bash(psql -d postgres -c \"SELECT 1 FROM pg_database WHERE datname='ptwstock'\")",
+      "Bash(psql -d postgres -c \"CREATE DATABASE ptwstock OWNER twstock ENCODING 'UTF8';\")",
+      "Bash(psql -d ptwstock)",
+      "Bash(psql -d ptwstock -c \"SELECT current_user, session_user;\")",
+      "Bash(psql \"postgresql://twstock:ghost1234@localhost:5432/ptwstock\" -c \"SET search_path TO twstock; SELECT current_schema\\(\\);\")"
     ]
   },
   "hooks": {
