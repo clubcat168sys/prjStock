@@ -15,6 +15,14 @@
 3. 查 `job_logs` 確認 RUN/STEP/ERR 事件
 4. 若 advisory lock 卡住：確認無其他程序持有同一 lock key
 
+**FinMind 欄位查詢（按需）**
+
+需要確認某 dataset 的欄位定義時，用 Grep 搜尋：
+```bash
+grep -A 20 "### TaiwanStockPrice" prjTWStock/finmind_FULL_llms.md
+```
+完整規格檔：`prjTWStock/finmind_FULL_llms.md`（不自動載入，節省 token）
+
 **常見問題**
 
 | 問題 | 原因 | 解法 |
